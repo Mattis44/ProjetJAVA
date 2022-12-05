@@ -9,13 +9,15 @@ public class Utilisateur {
     private String email;
     private String mdp;
     private String pseudo;
+    private int Role;
     private ArrayList lesRestosAimes;
 
-    public Utilisateur(int id, String email, String mdp, String pseudo) {
+    public Utilisateur(int id, String email, String mdp, String pseudo, int role) {
         this.id = id;
         this.email = email;
         this.mdp = mdp;
         this.pseudo = pseudo;
+        this.Role = role;
         this.lesRestosAimes = new ArrayList();
     }
 
@@ -55,6 +57,16 @@ public class Utilisateur {
         return lesRestosAimes;
     }
 
+    public int getRole() {
+        return Role;
+    }
+
+    public void setRole(int Role) {
+        this.Role = Role;
+    }
+    
+    
+
     public void setLesRestosAimes(ArrayList lesRestosAimes) {
         this.lesRestosAimes = lesRestosAimes;
     }
@@ -63,6 +75,8 @@ public class Utilisateur {
     public String toString() {
         return "Utilisateur{" + "id=" + id + ", email=" + email + ", mdp=" + mdp + ", pseudo=" + pseudo + ", lesRestosAimes=" + lesRestosAimes + '}';
     }
+    
+    
     
     
     

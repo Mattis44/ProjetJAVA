@@ -3,11 +3,12 @@ package METIERS;
 
 public class Critique {
     
+    private int id;
     private int note;
     private String commentaire;
     private Utilisateur unUtilisateur;
 
-    public Critique(int note, String commentaire, Utilisateur unUtilisateur) {
+    public Critique(int id, int note, String commentaire, Utilisateur unUtilisateur) {
         this.note = note;
         this.commentaire = commentaire;
         this.unUtilisateur = unUtilisateur;
