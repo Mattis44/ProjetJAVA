@@ -17,12 +17,12 @@ import javax.swing.JOptionPane;
  *
  * @author mattis
  */
-public class CtrlPrincipal implements WindowListener, ActionListener {
+public class Ctrllogin implements WindowListener, ActionListener {
  
     private login_frame vueLogin;
     private main_frame vueMain;
     
-    public CtrlPrincipal(login_frame vue) {
+    public Ctrllogin(login_frame vue) {
         
         this.vueLogin = vueLogin;
         this.vueMain = vueMain;

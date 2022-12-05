@@ -94,10 +94,7 @@ public class utilisateurDAO {
         crypt.update(text.getBytes(StandardCharsets.UTF_8));
         byte[] bytes = crypt.digest();
         BigInteger bi = new BigInteger(1, bytes);
-        String digest = String.format("%0" + (bytes.length << 1) + "x", bi);
-        
-        System.out.println(digest);
-        
+        String digest = String.format("%0" + (bytes.length << 1) + "x", bi);        
         return digest;
     }
 }
