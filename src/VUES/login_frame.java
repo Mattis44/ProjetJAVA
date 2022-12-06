@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import VUES.main_frame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +26,7 @@ public class login_frame extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Resto FR - Connexion");
         jLabelErreur.setVisible(true);
+        jLabelErreur.setText(" ");
     }
 
     /**
@@ -68,9 +70,14 @@ public class login_frame extends javax.swing.JFrame {
         });
 
         jButtonExit.setText("Quitter");
+        jButtonExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExitActionPerformed(evt);
+            }
+        });
 
         jLabelErreur.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErreur.setText("Vous n'avez pas accès à cette application");
+        jLabelErreur.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,7 +131,10 @@ public class login_frame extends javax.swing.JFrame {
     private void jButtonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnexionActionPerformed
         try {
             Utilisateur user = DAO.utilisateurDAO.getOneByLogin(jTextFieldUser.getText(), jPasswordField.getText());
-            if (user.getRole().getId() <= 2) {
+            if (user == null) {
+                jLabelErreur.setText("L'email ou le mot de passe est incorrect");
+            }
+            if (user.getRole().getId() >= 2) {
                 main_frame laVueMain = new main_frame(user.getRole());
                 // CtrlLesClients leControleurLesAdresses = new CtrlLesClients(laVueLesClients);
                 laVueMain.setVisible(true);
@@ -142,6 +152,13 @@ public class login_frame extends javax.swing.JFrame {
     private void jTextFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUserActionPerformed
+
+    private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
+        int rep = JOptionPane.showConfirmDialog(null, "Quitter l'application\nEtes-vous sûr(e) ?", "Resto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (rep == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jButtonExitActionPerformed
 
     /**
      * @param args the command line arguments

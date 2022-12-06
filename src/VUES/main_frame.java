@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package VUES;
+import METIERS.Critique;
 import METIERS.Role;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,12 +16,31 @@ import METIERS.Role;
  */
 public class main_frame extends javax.swing.JFrame {
 
+    private Role role;
     /**
      * Creates new form main_frame
      */
     public main_frame(Role role) {
         initComponents();
+        this.role = role;
         this.setTitle("Resto FR - Administration [" + role.getLibelle() + "]");
+    }
+    
+    public void remplirTableau() {
+        ArrayList<Critique> listMessages = null;
+        listMessages = DAO.critiqueDAO.getAll();
+        jTablel.
+        String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
+        getVue().getModeleTableClients().setColumnIdentifiers(titresColonnes);
+        String[] ligneDonnees = new String[3];
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        for (Client unClient : lesClients) {
+            ligneDonnees[0] = unClient.getNom();
+            ligneDonnees[1] = unClient.getPrenom();
+            ligneDonnees[2] = sdf.format(unClient.getDateNaissance());
+            getVue().getModeleTableClients().addRow(ligneDonnees);
+        }
+        
     }
 
     /**
@@ -44,7 +67,7 @@ public class main_frame extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Utilisateur", "Restaurant", "Date", "Message", "Masqué"
+                "Utilisateur", "Restaurant", "Date", "Message", "Masquer"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -97,7 +120,9 @@ public class main_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHideMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHideMsgActionPerformed
-        // TODO add your handling code here:
+        //if (this.role.getId() == 3 ) {
+            // TODO
+        //}
     }//GEN-LAST:event_jButtonHideMsgActionPerformed
 
     /**
