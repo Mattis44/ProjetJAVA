@@ -1,19 +1,26 @@
 package METIERS;
 
-
 public class Critique {
     
-    private int id;
     private int note;
     private String commentaire;
     private Utilisateur unUtilisateur;
+    private Resto unResto;
 
-    public Critique(int id, int note, String commentaire, Utilisateur unUtilisateur) {
+    public Critique(Resto unResto, int note, String commentaire, Utilisateur unUtilisateur) {
         this.note = note;
         this.commentaire = commentaire;
         this.unUtilisateur = unUtilisateur;
     }
 
+    public Resto getUnResto() {
+        return unResto;
+    }
+
+    public void setUnResto(Resto unResto) {
+        this.unResto = unResto;
+    }
+    
     public int getNote() {
         return note;
     }
