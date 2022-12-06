@@ -5,6 +5,13 @@
  */
 package VUES;
 
+import METIERS.Utilisateur;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import VUES.main_frame;
+
 /**
  *
  * @author Game_K
@@ -16,6 +23,8 @@ public class login_frame extends javax.swing.JFrame {
      */
     public login_frame() {
         initComponents();
+        this.setTitle("Resto FR - Connexion");
+        jLabelErreur.setVisible(true);
     }
 
     /**
@@ -34,11 +43,18 @@ public class login_frame extends javax.swing.JFrame {
         jButtonConnexion = new javax.swing.JButton();
         jButtonExit = new javax.swing.JButton();
         jPasswordField = new javax.swing.JPasswordField();
+        jLabelErreur = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setText("Connexion");
+
+        jTextFieldUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUserActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Utilisateur");
 
@@ -53,6 +69,9 @@ public class login_frame extends javax.swing.JFrame {
 
         jButtonExit.setText("Quitter");
 
+        jLabelErreur.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErreur.setText("Vous n'avez pas accès à cette application");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -64,15 +83,17 @@ public class login_frame extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonConnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2)
-                            .addComponent(jTextFieldUser, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                            .addComponent(jLabel3)
-                            .addComponent(jPasswordField))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelErreur)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonConnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel2)
+                                .addComponent(jTextFieldUser, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addComponent(jPasswordField)))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -88,7 +109,9 @@ public class login_frame extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelErreur)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonConnexion)
                     .addComponent(jButtonExit))
@@ -99,8 +122,26 @@ public class login_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnexionActionPerformed
-        // TODO add your handling code here:
+        try {
+            Utilisateur user = DAO.utilisateurDAO.getOneByLogin(jTextFieldUser.getText(), jPasswordField.getText());
+            if (user.getRole().getId() <= 2) {
+                main_frame laVueMain = new main_frame(user.getRole());
+                // CtrlLesClients leControleurLesAdresses = new CtrlLesClients(laVueLesClients);
+                laVueMain.setVisible(true);
+                this.setVisible(false);
+            } else {
+                jLabelErreur.setText("Vous n'avez pas accès à cette application");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(login_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(login_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonConnexionActionPerformed
+
+    private void jTextFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,6 +185,7 @@ public class login_frame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelErreur;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldUser;
     // End of variables declaration//GEN-END:variables

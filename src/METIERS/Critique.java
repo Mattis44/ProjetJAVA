@@ -1,28 +1,49 @@
 package METIERS;
 
+
 /**
  * Classe représentant les critiques des utilisateurs du site R3sto.fr
- * @author marce
+ * 
  */
 
 public class Critique {
     
-    private int id;
     private int note;
     private String commentaire;
     private Utilisateur unUtilisateur;
+    private Resto unResto;
+    private boolean masquer;
 
     /**
      * Constructeur avec les 4 attributs
-     * @param id : identifiant BDD de la table resto
+     * @param unResto : identifiant BDD de la table resto
      * @param note
      * @param commentaire
      * @param unUtilisateur 
      */
-    public Critique(int id, int note, String commentaire, Utilisateur unUtilisateur) {
+    public Critique(Resto unResto, int note, String commentaire, Utilisateur unUtilisateur, boolean masquer) {
+        this.unResto = unResto;
         this.note = note;
         this.commentaire = commentaire;
         this.unUtilisateur = unUtilisateur;
+        this.masquer = masquer;
+    }
+
+
+    public Resto getUnResto() {
+        return unResto;
+    }
+
+    public void setUnResto(Resto unResto) {
+        this.unResto = unResto;
+    }
+
+    public boolean isMasquer() {
+        return masquer;
+    }
+
+    public void setMasquer(boolean masquer) {
+        this.masquer = masquer;
     }
     
     

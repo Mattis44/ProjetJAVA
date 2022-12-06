@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Classe représentant les utilisateurs du site R3sto.fr
- * @author marce
+ * 
  */
 public class Utilisateur {
     
@@ -12,7 +12,7 @@ public class Utilisateur {
     private String email; //email de l'utilisateur
     private String mdp; // mot de passe de l'utilisateur
     private String pseudo; // pseudo de l'utilisateur
-    private int Role; // role d'accès au information - donnée
+    private Role unRole; // role d'accès au information - donnée
     private ArrayList lesRestosAimes;
 
     /**
@@ -21,14 +21,15 @@ public class Utilisateur {
      * @param email
      * @param mdp
      * @param pseudo
-     * @param role 
+     * @param unRole 
      */
-    public Utilisateur(int id, String email, String mdp, String pseudo, int role) {
+
+    public Utilisateur(int id, String email, String mdp, String pseudo, Role unRole) {
         this.id = id;
         this.email = email;
         this.mdp = mdp;
         this.pseudo = pseudo;
-        this.Role = role;
+        this.unRole = unRole;
         this.lesRestosAimes = new ArrayList();
     }
 
@@ -68,12 +69,12 @@ public class Utilisateur {
         return lesRestosAimes;
     }
 
-    public int getRole() {
-        return Role;
+    public Role getRole() {
+        return unRole;
     }
 
-    public void setRole(int Role) {
-        this.Role = Role;
+    public void setRole(Role unRole) {
+        this.unRole = unRole;
     }
     
     

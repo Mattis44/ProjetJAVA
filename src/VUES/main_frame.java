@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package VUES;
+import METIERS.Role;
 
 /**
  *
@@ -14,8 +15,9 @@ public class main_frame extends javax.swing.JFrame {
     /**
      * Creates new form main_frame
      */
-    public main_frame() {
+    public main_frame(Role role) {
         initComponents();
+        this.setTitle("Resto FR - Administration [" + role.getLibelle() + "]");
     }
 
     /**
@@ -128,7 +130,8 @@ public class main_frame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new main_frame().setVisible(true);
+                Role r = new Role(0, "");
+                new main_frame(r).setVisible(true);
             }
         });
     }

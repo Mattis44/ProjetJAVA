@@ -35,4 +35,22 @@ public class restoDAO {
         }
         return lesRestos;
     }
+    
+    public static Resto getOneById(int id) throws SQLException{
+        Resto unResto = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+        String request = "SELECT * FROM resto WHERE idR = ?";
+        pstmt = jdbc.getConnexion().prepareStatement(request);
+        pstmt.setInt(1, id);
+        rs = pstmt.executeQuery();
+        if(rs.next()){
+            unResto = new Resto(rs.getInt("idR"), rs.getString("nomR"), rs.getString("numAdrR"), rs.getString("voieAdrR"), rs.getString("cpR"), rs.getString("villeR"), rs.getFloat("atitudeDegR"), rs.getFloat("longitudeDegR"), rs.getString("descR"), rs.getString("horairesR"));
+        }
+        return unResto;
+    }
+    
+    
 }

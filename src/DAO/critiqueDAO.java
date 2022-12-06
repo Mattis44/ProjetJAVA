@@ -1,6 +1,7 @@
 package DAO;
 
 import METIERS.Critique;
+import METIERS.Resto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,18 +27,35 @@ public class critiqueDAO {
             int note = rs.getInt("note");
             String commentaire = rs.getString("commentaire");
             int idU = rs.getInt("idU");
+            boolean masquer = rs.getBoolean("masquer");
             
             // Creating Utilisateur object
             
             Utilisateur unUtilisateur = DAO.utilisateurDAO.getOneById(idU);
+            Resto unResto = DAO.restoDAO.getOneById(idR);
             
-            
-            uneCritique = new Critique (idR, note, commentaire, unUtilisateur);
+            uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer);
             lesCritiques.add(uneCritique);
             } 
         return lesCritiques;
         }
     
+    
+    public static Critique getOneByIdR(int id) throws SQLException{
+        Critique uneCritique = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+        String request = "SELECT * FROM critique WHERE idR = ?";
+        pstmt = jdbc.getConnexion().prepareStatement(request);
+        pstmt.setInt(1, id);
+        rs = pstmt.executeQuery();
+        if(rs.next()){
+            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"));
+        }
+        return uneCritique;
+    }
     
     
     }

@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import METIERS.Role;
 import METIERS.Utilisateur;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +45,7 @@ public class utilisateurDAO {
             String mail = rs.getString("mailU");
             String mdp = rs.getString("mdpU");
             String pseudo = rs.getString("pseudoU");
-            int role = rs.getInt("roleU");
+            Role role = DAO.roleDAO.getOneById(rs.getInt("roleU"));
             unUtilisateur = new Utilisateur (id, mail, mdp, pseudo, role);
             lesUtilisateurs.add(unUtilisateur);
         }
@@ -63,7 +64,7 @@ public class utilisateurDAO {
         pstmt.setInt(1, id);
         rs = pstmt.executeQuery();
         if(rs.next()){
-            unUtilisateur = new Utilisateur(rs.getInt("idU"), rs.getString("mailU"), rs.getString("mdpU"), rs.getString("pseudoU"), rs.getInt("roleU"));
+            unUtilisateur = new Utilisateur(rs.getInt("idU"), rs.getString("mailU"), rs.getString("mdpU"), rs.getString("pseudoU"), DAO.roleDAO.getOneById(rs.getInt("roleU")));
         }
         return unUtilisateur;
     }
@@ -83,7 +84,7 @@ public class utilisateurDAO {
         
         rs = pstmt.executeQuery();
         if(rs.next()){
-            unUtilisateur = new Utilisateur(rs.getInt("idU"), rs.getString("mailU"), rs.getString("mdpU"), rs.getString("pseudoU"), rs.getInt("roleU"));
+            unUtilisateur = new Utilisateur(rs.getInt("idU"), rs.getString("mailU"), rs.getString("mdpU"), rs.getString("pseudoU"), DAO.roleDAO.getOneById(rs.getInt("roleU")));
         }
         return unUtilisateur;
     }
@@ -94,10 +95,7 @@ public class utilisateurDAO {
         crypt.update(text.getBytes(StandardCharsets.UTF_8));
         byte[] bytes = crypt.digest();
         BigInteger bi = new BigInteger(1, bytes);
-        String digest = String.format("%0" + (bytes.length << 1) + "x", bi);
-        
-        System.out.println(digest);
-        
+        String digest = String.format("%0" + (bytes.length << 1) + "x", bi);        
         return digest;
     }
 }
