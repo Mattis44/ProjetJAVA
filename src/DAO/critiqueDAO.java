@@ -27,13 +27,14 @@ public class critiqueDAO {
             int note = rs.getInt("note");
             String commentaire = rs.getString("commentaire");
             int idU = rs.getInt("idU");
+            boolean masquer = rs.getBoolean("masquer");
             
             // Creating Utilisateur object
             
             Utilisateur unUtilisateur = DAO.utilisateurDAO.getOneById(idU);
             Resto unResto = DAO.restoDAO.getOneById(idR);
             
-            uneCritique = new Critique (unResto, note, commentaire, unUtilisateur);
+            uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer);
             lesCritiques.add(uneCritique);
             } 
         return lesCritiques;
@@ -51,7 +52,7 @@ public class critiqueDAO {
         pstmt.setInt(1, id);
         rs = pstmt.executeQuery();
         if(rs.next()){
-            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")));
+            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"));
         }
         return uneCritique;
     }
