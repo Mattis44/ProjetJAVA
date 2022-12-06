@@ -1,5 +1,9 @@
 package METIERS;
 
+/**
+ * Classe représentant les critiques des utilisateurs du site R3sto.fr
+ * @author marce
+ */
 
 public class Critique {
     
@@ -8,12 +12,20 @@ public class Critique {
     private String commentaire;
     private Utilisateur unUtilisateur;
 
+    /**
+     * Constructeur avec les 4 attributs
+     * @param id : identifiant BDD de la table resto
+     * @param note
+     * @param commentaire
+     * @param unUtilisateur 
+     */
     public Critique(int id, int note, String commentaire, Utilisateur unUtilisateur) {
         this.note = note;
         this.commentaire = commentaire;
         this.unUtilisateur = unUtilisateur;
     }
-
+    
+    
     public int getNote() {
         return note;
     }

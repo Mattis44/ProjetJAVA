@@ -1,9 +1,14 @@
 package METIERS;
 
+/**
+ * Classe représentant les Photos des restaurants
+ * @author marce
+ */
+
 public class Photo {
     
-    private int id;
-    private String chemin;
+    private int id;  // numéro d'identification de la photo
+    private String chemin; // nom du fichier avec l'extension
 
     public Photo(int id, String chemin) {
         this.id = id;

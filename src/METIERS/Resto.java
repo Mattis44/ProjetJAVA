@@ -3,24 +3,42 @@ package METIERS;
 
 import java.util.ArrayList;
 
-
+/**
+ * Classe représentant les Restaurants du site R3sto.fr
+ * @author marce
+ */
 
 public class Resto {
     
     
-    private int id;
-    private String nom;
-    private String numAdr;
-    private String voieAdr;
-    private String cp;
-    private String ville;
-    private float latitudeDeg;
-    private float longitudeDeg;
-    private String desc;
-    private String horaires;
+    private int id; // identifiant du resto
+    private String nom; // nom du resto
+    private String numAdr; // numéro de la rue
+    private String voieAdr; // nom de la rue
+    private String cp; // code postal
+    private String ville; // nom de la ville
+    private float latitudeDeg; // coordonnées latitude
+    private float longitudeDeg; // coordonnées longitude
+    private String desc; // description du site web
+    private String horaires; // horaire d'ouverture
     private ArrayList<Photo> lesPhotos;
     private ArrayList<Critique> lesCritiques;
 
+    
+    /**
+     * Constructeur de la classe Resto
+     * @param id
+     * @param nom
+     * @param numAdr
+     * @param voieAdr
+     * @param cp
+     * @param ville
+     * @param latitudeDeg
+     * @param longitudeDeg
+     * @param desc
+     * @param horaires 
+     */
+    
     public Resto(int id, String nom, String numAdr, String voieAdr, String cp, String ville, float latitudeDeg, float longitudeDeg, String desc, String horaires) {
         this.id = id;
         this.nom = nom;
