@@ -1,6 +1,7 @@
 package MAIN;
 
 import DAO.JDBC;
+import METIERS.Role;
 import VUES.login_frame;
 import VUES.main_frame;
 import java.sql.SQLException;
@@ -27,7 +28,8 @@ public class main {
             JDBC.getInstance().connecter();
             // instanciation contrôleur et vue sur la liste des adresses
             login_frame vueLogin = new login_frame();
-            main_frame vueMaint = new main_frame();
+            Role r = new Role(0, "");
+            main_frame vueMaint = new main_frame(r);
             // afficher la vue initiale
             vueLogin.setVisible(true);
 
