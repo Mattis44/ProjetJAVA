@@ -1,16 +1,28 @@
 package METIERS;
 
 import java.util.ArrayList;
-import METIERS.Role;
 
+/**
+ * Classe représentant les utilisateurs du site R3sto.fr
+ * 
+ */
 public class Utilisateur {
     
-    private int id;
-    private String email;
-    private String mdp;
-    private String pseudo;
-    private Role unRole;
+    private int id; // identifiant des utilisateurs
+    private String email; //email de l'utilisateur
+    private String mdp; // mot de passe de l'utilisateur
+    private String pseudo; // pseudo de l'utilisateur
+    private Role unRole; // role d'accès au information - donnée
     private ArrayList lesRestosAimes;
+
+    /**
+     * Constructeur de la 
+     * @param id
+     * @param email
+     * @param mdp
+     * @param pseudo
+     * @param unRole 
+     */
 
     public Utilisateur(int id, String email, String mdp, String pseudo, Role unRole) {
         this.id = id;
