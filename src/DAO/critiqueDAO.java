@@ -57,6 +57,18 @@ public class critiqueDAO {
         return uneCritique;
     }
     
+    public static void setMasquerById(int idR, int idU, int value) throws SQLException{
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+       String request = "UPDATE critiquer SET masquer = ? WHERE idR = ? AND idU = ?";
+       pstmt = jdbc.getConnexion().prepareStatement(request);
+        pstmt.setInt(1, value);
+        pstmt.setInt(2, idR);
+        pstmt.setInt(3, idU);
+        pstmt.executeUpdate();
+    }
+    
     
     }
     

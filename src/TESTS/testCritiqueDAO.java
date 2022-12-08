@@ -20,6 +20,8 @@ public class testCritiqueDAO {
             System.out.println("Test0 effectué : connexion\n");
             test1_getAll();
             System.out.println("Test1 effectué : sélection multiple\n");
+            DAO.critiqueDAO.setMasquerById(1, 2, 1);
+            System.out.println("Test2 effectué : Masquer un avis\n");
         } catch (SQLException e) {
             System.err.println("Erreur SQL : " + e);
         } finally {
