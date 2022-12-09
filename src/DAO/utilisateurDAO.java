@@ -98,4 +98,20 @@ public class utilisateurDAO {
         String digest = String.format("%0" + (bytes.length << 1) + "x", bi);        
         return digest;
     }
+    
+    public static Utilisateur getOneByEmail(String email) throws SQLException{
+        Utilisateur unUtilisateur = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+        String request = "SELECT * FROM utilisateur WHERE mailU = ?";
+        pstmt = jdbc.getConnexion().prepareStatement(request);
+        pstmt.setString(1, email);
+        rs = pstmt.executeQuery();
+        if(rs.next()){
+            unUtilisateur = new Utilisateur(rs.getInt("idU"), rs.getString("mailU"), rs.getString("mdpU"), rs.getString("pseudoU"), DAO.roleDAO.getOneById(rs.getInt("roleU")));
+        }
+        return unUtilisateur;
+    }
 }
