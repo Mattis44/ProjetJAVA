@@ -47,7 +47,7 @@ public class restoDAO {
         pstmt.setInt(1, id);
         rs = pstmt.executeQuery();
         if(rs.next()){
-            unResto = new Resto(rs.getInt("idR"), rs.getString("nomR"), rs.getString("numAdrR"), rs.getString("voieAdrR"), rs.getString("cpR"), rs.getString("villeR"), rs.getFloat("atitudeDegR"), rs.getFloat("longitudeDegR"), rs.getString("descR"), rs.getString("horairesR"));
+            unResto = new Resto(rs.getInt("idR"), rs.getString("nomR"), rs.getString("numAdrR"), rs.getString("voieAdrR"), rs.getString("cpR"), rs.getString("villeR"), rs.getFloat("latitudeDegR"), rs.getFloat("longitudeDegR"), rs.getString("descR"), rs.getString("horairesR"));
         }
         return unResto;
     }
