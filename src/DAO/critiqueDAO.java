@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import METIERS.Utilisateur;
+import java.sql.Date;
 
 
 public class critiqueDAO {
@@ -28,34 +29,18 @@ public class critiqueDAO {
             String commentaire = rs.getString("commentaire");
             int idU = rs.getInt("idU");
             boolean masquer = rs.getBoolean("masquer");
+            Date date = rs.getDate("date");
             
             // Creating Utilisateur object
             
             Utilisateur unUtilisateur = DAO.utilisateurDAO.getOneById(idU);
             Resto unResto = DAO.restoDAO.getOneById(idR);
             
-            uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer);
+            uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer, date);
             lesCritiques.add(uneCritique);
             } 
         return lesCritiques;
         }
-    
-    
-    public static Critique getOneByIdR(int id) throws SQLException{
-        Critique uneCritique = null;
-        ResultSet rs = null;
-        PreparedStatement pstmt;
-        JDBC jdbc = JDBC.getInstance();
-        
-        String request = "SELECT * FROM critique WHERE idR = ?";
-        pstmt = jdbc.getConnexion().prepareStatement(request);
-        pstmt.setInt(1, id);
-        rs = pstmt.executeQuery();
-        if(rs.next()){
-            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"));
-        }
-        return uneCritique;
-    }
     
     public static void setMasquerById(int idR, int idU, int value) throws SQLException{
         PreparedStatement pstmt;
@@ -81,10 +66,11 @@ public class critiqueDAO {
         pstmt.setInt(2, idR);
         rs = pstmt.executeQuery();
         if(rs.next()){
-            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"));
+            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"), rs.getDate("date"));
         }
         return uneCritique;
     }
+   
     
     
     }

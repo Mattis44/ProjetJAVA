@@ -1,5 +1,7 @@
 package METIERS;
 
+import java.sql.Date;
+
 
 /**
  * Classe représentant les critiques des utilisateurs du site R3sto.fr
@@ -13,6 +15,7 @@ public class Critique {
     private Utilisateur unUtilisateur;
     private Resto unResto;
     private boolean masquer;
+    private Date date;
 
     /**
      * Constructeur avec les 4 attributs
@@ -21,15 +24,23 @@ public class Critique {
      * @param commentaire
      * @param unUtilisateur 
      */
-    public Critique(Resto unResto, int note, String commentaire, Utilisateur unUtilisateur, boolean masquer) {
+    public Critique(Resto unResto, int note, String commentaire, Utilisateur unUtilisateur, boolean masquer, Date date) {
         this.unResto = unResto;
         this.note = note;
         this.commentaire = commentaire;
         this.unUtilisateur = unUtilisateur;
         this.masquer = masquer;
+        this.date = date;
     }
 
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
     public Resto getUnResto() {
         return unResto;
     }
