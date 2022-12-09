@@ -69,6 +69,23 @@ public class critiqueDAO {
         pstmt.executeUpdate();
     }
     
+    public static Critique getOneByIdUAndIdR(int idU, int idR) throws SQLException{
+        Critique uneCritique = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+        String request = "SELECT * FROM critique WHERE idR = ? AND idU = ?";
+        pstmt = jdbc.getConnexion().prepareStatement(request);
+        pstmt.setInt(1, idU);
+        pstmt.setInt(2, idR);
+        rs = pstmt.executeQuery();
+        if(rs.next()){
+            uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"));
+        }
+        return uneCritique;
+    }
+    
     
     }
     
