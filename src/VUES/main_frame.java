@@ -9,6 +9,11 @@ import METIERS.Role;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,30 +22,16 @@ import java.util.ArrayList;
 public class main_frame extends javax.swing.JFrame {
 
     private Role role;
+    private DefaultTableModel modeleTable;
     /**
      * Creates new form main_frame
      */
-    public main_frame(Role role) {
+    public main_frame(Role role) throws SQLException {
         initComponents();
         this.role = role;
         this.setTitle("Resto FR - Administration [" + role.getLibelle() + "]");
-    }
-    
-    public void remplirTableau() {
-        ArrayList<Critique> listMessages = null;
-        listMessages = DAO.critiqueDAO.getAll();
-        jTablel.
-        String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
-        getVue().getModeleTableClients().setColumnIdentifiers(titresColonnes);
-        String[] ligneDonnees = new String[3];
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        for (Client unClient : lesClients) {
-            ligneDonnees[0] = unClient.getNom();
-            ligneDonnees[1] = unClient.getPrenom();
-            ligneDonnees[2] = sdf.format(unClient.getDateNaissance());
-            getVue().getModeleTableClients().addRow(ligneDonnees);
-        }
-        
+        modeleTable = new DefaultTableModel();
+        jTable1.setModel(modeleTable);
     }
 
     /**
@@ -125,40 +116,12 @@ public class main_frame extends javax.swing.JFrame {
         //}
     }//GEN-LAST:event_jButtonHideMsgActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public DefaultTableModel getModeleTable() {
+        return modeleTable;
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Role r = new Role(0, "");
-                new main_frame(r).setVisible(true);
-            }
-        });
+    public void setModeleTable(DefaultTableModel modeleTable) {
+        this.modeleTable = modeleTable;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

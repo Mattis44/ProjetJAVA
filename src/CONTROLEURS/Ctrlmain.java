@@ -5,39 +5,66 @@
  */
 package CONTROLEURS;
 
+import METIERS.Critique;
 import VUES.login_frame;
 import VUES.main_frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author mattis
  */
-public class CtrlPrincipal implements WindowListener, ActionListener {
+public class Ctrlmain implements WindowListener, ActionListener {
  
-    private login_frame vueLogin;
-    private main_frame vueMain;
+    private main_frame vue;
     
-    public CtrlPrincipal(login_frame vue) {
-        this.vueLogin = vueLogin;
-        this.vueMain = vueMain;
+    public Ctrlmain(main_frame vue) throws SQLException {
+        this.vue = vue;
         
-        this.vueLogin.addWindowListener(this);
-        this.vueMain.addWindowListener(this);
+        this.vue.addWindowListener(this);
+        
+        afficherMain();
     }
     
-    public void afficherLogin(){
-        vueLogin.setVisible(true);
-        vueMain.setVisible(false);
+    public final void afficherMain() throws  SQLException {
+        ArrayList<Critique> listMessages = null;
+        try {
+            listMessages = DAO.critiqueDAO.getAll();
+            System.out.println(listMessages.toString());
+            getVue().getModeleTable().setRowCount(0);
+            String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
+            getVue().getModeleTable().setColumnIdentifiers(titresColonnes);
+            String[] ligneDonnees = new String[5];
+            // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            for (Critique unMsg : listMessages) {
+                ligneDonnees[0] = unMsg.getUnUtilisateur().getEmail();
+                ligneDonnees[1] = unMsg.getUnResto().getNom();
+                ligneDonnees[2] = "null"; // sdf.format(unMsg.getDate());
+                ligneDonnees[3] = unMsg.getCommentaire();
+                if (unMsg.isMasquer()) {
+                    ligneDonnees[4] = "Oui";
+                } else {
+                    ligneDonnees[4] = "Non";
+                }
+                getVue().getModeleTable().addRow(ligneDonnees);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur DAO getAll()");
+        }
     }
     
-    public void afficherMain(){
-        vueLogin.setVisible(false);
-        vueMain.setVisible(true);
+    public main_frame getVue() {
+        return vue;
+    }
+    
+    public void setVue(main_frame vue) {
+        this.vue = vue;
     }
 
     private void quitterApp(){
@@ -46,22 +73,6 @@ public class CtrlPrincipal implements WindowListener, ActionListener {
         if (rep == JOptionPane.YES_OPTION){
             System.exit(0);
         }
-    }
-    
-    public login_frame getVueAdresse() {
-        return vueLogin;
-    }
-
-    public void setVueAdresse(login_frame vueLogin) {
-        this.vueLogin = vueLogin;
-    }
-    
-    public main_frame getVueClient() {
-        return vueMain;
-    }
-
-    public void setVueClient(main_frame vueMain) {
-        this.vueMain = vueMain;
     }
     
     @Override
