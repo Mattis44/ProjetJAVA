@@ -84,7 +84,7 @@ public class Critique {
 
     @Override
     public String toString() {
-        return "Critique{" + "note=" + note + ", commentaire=" + commentaire + ", unUtilisateur=" + unUtilisateur + '}';
+        return "Critique{" + "note=" + note + ", commentaire=" + commentaire + ", unUtilisateur=" + unUtilisateur + ", date= " + date + '}';
     }
     
     
