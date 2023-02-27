@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/DAO/utilisateurDAO.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/METIERS/Critique.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/TESTS/testRestoDAO.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/CONTROLEURS/CtrlPrincipal.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/TESTS/testCritiqueDAO.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/DAO/JDBC.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/VUES/main_frame.java</file>
+            <file>file:/Users/mattis/Documents/GitHub/ProjetJAVA/src/DAO/critiqueDAO.java</file>
+        </group>
     </open-files>
 </project-private>
