@@ -41,7 +41,6 @@ public class Ctrlmain implements WindowListener, ActionListener {
             String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
             getVue().getModeleTable().setColumnIdentifiers(titresColonnes);
             String[] ligneDonnees = new String[5];
-            // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             for (Critique unMsg : listMessages) {
                 ligneDonnees[0] = unMsg.getUnUtilisateur().getEmail();
                 ligneDonnees[1] = unMsg.getUnResto().getNom();
