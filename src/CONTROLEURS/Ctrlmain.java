@@ -45,7 +45,7 @@ public class Ctrlmain implements WindowListener, ActionListener {
             for (Critique unMsg : listMessages) {
                 ligneDonnees[0] = unMsg.getUnUtilisateur().getEmail();
                 ligneDonnees[1] = unMsg.getUnResto().getNom();
-                ligneDonnees[2] = "null"; // sdf.format(unMsg.getDate());
+                ligneDonnees[2] = unMsg.getDate().toString();
                 ligneDonnees[3] = unMsg.getCommentaire();
                 if (unMsg.isMasquer()) {
                     ligneDonnees[4] = "Oui";
