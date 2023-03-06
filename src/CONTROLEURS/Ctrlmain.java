@@ -35,25 +35,36 @@ public class Ctrlmain implements WindowListener, ActionListener {
     public final void afficherMain() throws  SQLException {
         ArrayList<Critique> listMessages = null;
         try {
+            // Récupération de la liste des critiques depuis la base de données
             listMessages = DAO.critiqueDAO.getAll();
+            // Affichage de la liste de critiques dans la console
             System.out.println(listMessages.toString());
+            // Réinitialisation du moèdle de table
             getVue().getModeleTable().setRowCount(0);
+            // Définition des titres des colonnes du modèle de table
             String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
+            // Définition des colonnes du modèle de table
             getVue().getModeleTable().setColumnIdentifiers(titresColonnes);
+            // Initialisation du tableau de données pour chaque ligne de la table
             String[] ligneDonnees = new String[5];
+            // Parcours de la liste de critiques
             for (Critique unMsg : listMessages) {
+                // Ajout des données de la critique dans le tableau de données
                 ligneDonnees[0] = unMsg.getUnUtilisateur().getEmail();
                 ligneDonnees[1] = unMsg.getUnResto().getNom();
                 ligneDonnees[2] = unMsg.getDate().toString();
                 ligneDonnees[3] = unMsg.getCommentaire();
+                // Si la critique est masquée, le champ "Masquer" est emplir avec "OUI"
                 if (unMsg.isMasquer()) {
                     ligneDonnees[4] = "Oui";
                 } else {
                     ligneDonnees[4] = "Non";
                 }
+                // Ajout de la ligne de données dans le modèle de table
                 getVue().getModeleTable().addRow(ligneDonnees);
             }
         } catch (SQLException ex) {
+            // Affichage d'un message d'erreur en cas d'exception SQL lors de la récupération des critiques depuis la base de données
             System.out.println("Erreur DAO getAll()");
         }
     }
