@@ -10,19 +10,26 @@ import METIERS.Utilisateur;
 import java.sql.Date;
 
 
+
+/**
+ * Récupère toutes les critiques depuis la base de données triées par date décroissante
+ * retourne une liste de critiques tiées par date décroissante.
+ * @throws SQLException en cas d'erreur lors de la communication avec la base de données.
+ * @author marce
+ */
 public class critiqueDAO {
     
     public static ArrayList<Critique> getAll() throws SQLException{
-        ArrayList<Critique> lesCritiques = new ArrayList<Critique>();
-        Critique uneCritique;
-        ResultSet rs;
-        PreparedStatement pstmt;
-        JDBC jdbc = JDBC.getInstance();
-        String request = "SELECT * FROM critiquer";
+        ArrayList<Critique> lesCritiques = new ArrayList<Critique>();  // Initialisation de la liste de critiques à retourner
+        Critique uneCritique; // Variable temporaire pour stocker chaque critique
+        ResultSet rs; // Variable pour stocker le résultat de la requête SQL
+        PreparedStatement pstmt; // Requête SQL précompilée
+        JDBC jdbc = JDBC.getInstance(); // Connection à la base de données
+        String request = "SELECT * FROM critiquer ORDER BY critiquer.date DESC";
         
         pstmt = jdbc.getConnexion().prepareStatement(request);
         rs = pstmt.executeQuery();
-        
+        // Parcours du résultat et création d'un objet Critique pour chaque ligne
         while(rs.next()){
             int idR = rs.getInt("idR");
             int note = rs.getInt("note");
