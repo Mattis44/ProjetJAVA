@@ -44,10 +44,17 @@ public class critiqueDAO {
             Resto unResto = DAO.restoDAO.getOneById(idR);
             
             uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer, date);
-            lesCritiques.add(uneCritique);
-            } 
+            if (is_admin) {
+                lesCritiques.add(uneCritique);
+            } else {
+                if (!masquer) {
+                    lesCritiques.add(uneCritique);
+                }
+            }
+            
+        } 
         return lesCritiques;
-        }
+    }
     
     public static void setMasquerById(int idR, int idU, int value) throws SQLException{
         PreparedStatement pstmt;
@@ -76,6 +83,10 @@ public class critiqueDAO {
             uneCritique = new Critique(DAO.restoDAO.getOneById(rs.getInt("idR")), rs.getInt("note"), rs.getString("commentaire"), DAO.utilisateurDAO.getOneById(rs.getInt("idU")), rs.getBoolean("masquer"), rs.getDate("date"));
         }
         return uneCritique;
+    }
+
+    public static void setMasquerById(int id, int id0, boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    
     

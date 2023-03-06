@@ -40,7 +40,7 @@ public class testCritiqueDAO {
     }
     
     public static void test1_getAll() throws SQLException{
-        ArrayList<Critique> lesCritiques = DAO.critiqueDAO.getAll();
+        ArrayList<Critique> lesCritiques = DAO.critiqueDAO.getAll(false);
         System.out.println("Les Critiques lues : " + lesCritiques.toString());
         }
     

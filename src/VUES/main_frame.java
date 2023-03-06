@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package VUES;
+import DAO.critiqueDAO;
 import METIERS.Critique;
 import METIERS.Role;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import VUES.recherche_frame;
@@ -24,6 +26,7 @@ public class main_frame extends javax.swing.JFrame {
 
     private Role role;
     private DefaultTableModel modeleTable;
+    private ArrayList<Critique> listMessages = null;
     /**
      * Creates new form main_frame
      */
@@ -33,6 +36,11 @@ public class main_frame extends javax.swing.JFrame {
         this.setTitle("Resto FR - Administration [" + role.getLibelle() + "]");
         modeleTable = new DefaultTableModel();
         jTable1.setModel(modeleTable);
+        jButtonDelMsg.setEnabled(role.getId() == 3);
+    }
+    
+    public void setMessageList(ArrayList<Critique> listMessages) {
+        this.listMessages = listMessages;
     }
 
     /**
@@ -51,6 +59,11 @@ public class main_frame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,6 +82,11 @@ public class main_frame extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -123,15 +141,48 @@ public class main_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHideMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHideMsgActionPerformed
-        //if (this.role.getId() == 3 ) {
-            // TODO
-        //}
+
+        Critique select = this.listMessages.get(jTable1.getSelectedRow());
+        System.out.println(select);
+
+        int inverseStatus = 1;
+        String afficheStatus = "Masquer";
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == afficheStatus) {
+            inverseStatus = 0;
+            afficheStatus = "Afficher";
+        }
+
+        try {
+            critiqueDAO.setMasquerById(select.getUnResto().getId(), select.getUnUtilisateur().getId(), inverseStatus);
+            modeleTable.setValueAt(afficheStatus, jTable1.getSelectedRow(), 4);
+
+            afficheStatus = "Afficher";
+            if (inverseStatus == 0) {
+                afficheStatus = "Masquer";
+            }
+            jButtonHideMsg.setText(afficheStatus);            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(main_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonHideMsgActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        recherche_frame laVueRech = new recherche_frame();
-        laVueRech.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int rep = JOptionPane.showConfirmDialog(null, "Quitter l'application\nEtes-vous sûr(e) ?", "Resto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if (rep == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == "Masquer") {
+            jButtonHideMsg.setText("Afficher");
+        }
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == "Afficher") {
+            jButtonHideMsg.setText("Masquer");
+        } 
+    }//GEN-LAST:event_jTable1MouseClicked
 
     public DefaultTableModel getModeleTable() {
         return modeleTable;
