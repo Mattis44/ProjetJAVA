@@ -12,13 +12,13 @@ import java.sql.Date;
 
 public class critiqueDAO {
     
-    public static ArrayList<Critique> getAll() throws SQLException{
+    public static ArrayList<Critique> getAll(boolean is_admin) throws SQLException{
         ArrayList<Critique> lesCritiques = new ArrayList<Critique>();
         Critique uneCritique;
         ResultSet rs;
         PreparedStatement pstmt;
         JDBC jdbc = JDBC.getInstance();
-        String request = "SELECT * FROM critiquer";
+        String request = "SELECT * FROM critiquer ORDER BY critiquer.date DESC";
         
         pstmt = jdbc.getConnexion().prepareStatement(request);
         rs = pstmt.executeQuery();
@@ -37,10 +37,17 @@ public class critiqueDAO {
             Resto unResto = DAO.restoDAO.getOneById(idR);
             
             uneCritique = new Critique (unResto, note, commentaire, unUtilisateur, masquer, date);
-            lesCritiques.add(uneCritique);
-            } 
+            if (is_admin) {
+                lesCritiques.add(uneCritique);
+            } else {
+                if (!masquer) {
+                    lesCritiques.add(uneCritique);
+                }
+            }
+            
+        } 
         return lesCritiques;
-        }
+    }
     
     
     public static ArrayList<Critique> getAllByDate(Date date) throws SQLException{
@@ -131,9 +138,21 @@ public class critiqueDAO {
         }
         return uneCritique;
     }
+
+    public static void setMasquerById(int id, int id0, boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
-    
-    
+    public static void supprimerAvis(int idR, int idU) throws SQLException{
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+       String request = "DELETE FROM `critiquer` WHERE idR = ? AND idU = ?";
+       pstmt = jdbc.getConnexion().prepareStatement(request);
+       pstmt.setInt(1, idR);
+       pstmt.setInt(2, idU);
+       pstmt.executeUpdate();
+    }
     }
     
    

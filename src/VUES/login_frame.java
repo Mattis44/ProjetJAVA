@@ -29,6 +29,14 @@ public class login_frame extends javax.swing.JFrame {
         jLabelErreur.setVisible(true);
         jLabelErreur.setText(" ");
     }
+    
+    public void exit() {
+        int rep = JOptionPane.showConfirmDialog(null, "Quitter l'application\nEtes-vous sûr(e) ?", "Resto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if (rep == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,6 +57,11 @@ public class login_frame extends javax.swing.JFrame {
         jLabelErreur = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setText("Connexion");
@@ -137,7 +150,8 @@ public class login_frame extends javax.swing.JFrame {
             }
             if (user.getRole().getId() >= 2) {
                 main_frame laVueMain = new main_frame(user.getRole());
-                Ctrlmain leControleur = new Ctrlmain(laVueMain);
+                Ctrlmain leControleur = new Ctrlmain(laVueMain, user.getRole().getId()==3);
+                laVueMain.setMessageList(leControleur.getMessageList());
                 laVueMain.setVisible(true);
                 this.setVisible(false);
             } else {
@@ -155,11 +169,12 @@ public class login_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldUserActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
-        int rep = JOptionPane.showConfirmDialog(null, "Quitter l'application\nEtes-vous sûr(e) ?", "Resto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (rep == JOptionPane.YES_OPTION){
-            System.exit(0);
-        }
+        exit();
     }//GEN-LAST:event_jButtonExitActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        exit();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConnexion;

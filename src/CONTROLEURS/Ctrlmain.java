@@ -24,22 +24,21 @@ import javax.swing.JOptionPane;
 public class Ctrlmain implements WindowListener, ActionListener {
  
     private main_frame vue;
+    private boolean is_admin = false;
+    private ArrayList<Critique> listMessages = null;
     
-    public Ctrlmain(main_frame vue) throws SQLException {
+    public Ctrlmain(main_frame vue, boolean is_admin) throws SQLException {
         this.vue = vue;
-        
+        this.is_admin = is_admin;
         this.vue.addWindowListener(this);
-        
         afficherMain();
     }
     
     public final void afficherMain() throws  SQLException {
-        ArrayList<Critique> listMessages = null;
         try {
-            listMessages = DAO.critiqueDAO.getAll();
-            System.out.println(listMessages.toString());
+            listMessages = DAO.critiqueDAO.getAll(this.is_admin);
             getVue().getModeleTable().setRowCount(0);
-            String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "Masquer"};
+            String[] titresColonnes = {"Utilisateur", "Restaurant", "Date", "Message", "État"};
             getVue().getModeleTable().setColumnIdentifiers(titresColonnes);
             String[] ligneDonnees = new String[5];
             for (Critique unMsg : listMessages) {
@@ -48,9 +47,9 @@ public class Ctrlmain implements WindowListener, ActionListener {
                 ligneDonnees[2] = unMsg.getDate().toString();
                 ligneDonnees[3] = unMsg.getCommentaire();
                 if (unMsg.isMasquer()) {
-                    ligneDonnees[4] = "Oui";
+                    ligneDonnees[4] = "Masquer";
                 } else {
-                    ligneDonnees[4] = "Non";
+                    ligneDonnees[4] = "Afficher";
                 }
                 getVue().getModeleTable().addRow(ligneDonnees);
             }
@@ -59,6 +58,10 @@ public class Ctrlmain implements WindowListener, ActionListener {
         }
     }
 
+    
+    public ArrayList<Critique> getMessageList() {
+        return this.listMessages;
+    }
     
     public main_frame getVue() {
         return vue;

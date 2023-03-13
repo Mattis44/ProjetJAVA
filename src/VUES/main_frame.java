@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package VUES;
+import DAO.critiqueDAO;
 import METIERS.Critique;
 import METIERS.Role;
 import java.sql.SQLException;
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import VUES.recherche_frame;
 
 /**
  *
@@ -24,6 +25,7 @@ public class main_frame extends javax.swing.JFrame {
 
     private Role role;
     private DefaultTableModel modeleTable;
+    private ArrayList<Critique> listMessages = null;
     /**
      * Creates new form main_frame
      */
@@ -33,6 +35,11 @@ public class main_frame extends javax.swing.JFrame {
         this.setTitle("Resto FR - Administration [" + role.getLibelle() + "]");
         modeleTable = new DefaultTableModel();
         jTable1.setModel(modeleTable);
+        jButtonDelMsg.setEnabled(role.getId() == 3);
+    }
+    
+    public void setMessageList(ArrayList<Critique> listMessages) {
+        this.listMessages = listMessages;
     }
 
     /**
@@ -48,9 +55,13 @@ public class main_frame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButtonHideMsg = new javax.swing.JButton();
         jButtonDelMsg = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,6 +82,11 @@ public class main_frame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButtonHideMsg.setText("Masquer");
@@ -81,11 +97,9 @@ public class main_frame extends javax.swing.JFrame {
         });
 
         jButtonDelMsg.setText("Supprimer");
-
-        jButton1.setText("Recherche");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDelMsg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonDelMsgActionPerformed(evt);
             }
         });
 
@@ -98,9 +112,7 @@ public class main_frame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonDelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonHideMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -114,8 +126,7 @@ public class main_frame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonHideMsg)
-                    .addComponent(jButtonDelMsg)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonDelMsg))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -123,15 +134,69 @@ public class main_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHideMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHideMsgActionPerformed
-        //if (this.role.getId() == 3 ) {
-            // TODO
-        //}
+
+        Critique select = this.listMessages.get(jTable1.getSelectedRow());
+
+        int inverseStatus = 1;
+        String afficheStatus = "Masquer";
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == afficheStatus) {
+            inverseStatus = 0;
+            afficheStatus = "Afficher";
+        }
+
+        try {
+            critiqueDAO.setMasquerById(select.getUnResto().getId(), select.getUnUtilisateur().getId(), inverseStatus);
+            modeleTable.setValueAt(afficheStatus, jTable1.getSelectedRow(), 4);
+            
+            if (this.role.getId() == 2) {
+                modeleTable.removeRow(jTable1.getSelectedRow());
+            }
+            
+            afficheStatus = "Afficher";
+            if (inverseStatus == 0) {
+                afficheStatus = "Masquer";
+            }
+            jButtonHideMsg.setText(afficheStatus);          
+        } catch (SQLException ex) {
+            Logger.getLogger(main_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonHideMsgActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         recherche_frame laVueRech = new recherche_frame(this);
         laVueRech.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int rep = JOptionPane.showConfirmDialog(null, "Quitter l'application\nEtes-vous sûr(e) ?", "Resto", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if (rep == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == "Masquer") {
+            jButtonHideMsg.setText("Afficher");
+        }
+        if (jTable1.getValueAt(jTable1.getSelectedRow(), 4) == "Afficher") {
+            jButtonHideMsg.setText("Masquer");
+        } 
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButtonDelMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelMsgActionPerformed
+        if (this.role.getId() == 3){
+            Critique select = this.listMessages.get(jTable1.getSelectedRow());
+            try {
+            critiqueDAO.supprimerAvis(select.getUnResto().getId(), select.getUnUtilisateur().getId());
+            modeleTable.removeRow(jTable1.getSelectedRow());
+                     
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(main_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_jButtonDelMsgActionPerformed
 
     public DefaultTableModel getModeleTable() {
         return modeleTable;
@@ -146,7 +211,6 @@ public class main_frame extends javax.swing.JFrame {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonDelMsg;
     private javax.swing.JButton jButtonHideMsg;
     private javax.swing.JScrollPane jScrollPane1;
