@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import CONTROLEURS.Ctrlmain;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import METIERS.Role;
 
 /**
  *
@@ -152,8 +153,12 @@ public class recherche_frame extends javax.swing.JFrame {
         
         if(date == null) {
             if(dateSemaine1 == null || dateSemaine2 == null){
-                // Si la rien est remplie, on remplie normalement la JTable.
-                afficherCritiques();
+                try {
+                    // Si la rien est remplie, on remplie normalement la JTable.
+                    afficherCritiques();
+                } catch (SQLException ex) {
+                    Logger.getLogger(recherche_frame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
                 // dateSemaine1 & dateSemaine2 sont remplis.
                 afficherCritiquesEntreDates(dateSemaine1, dateSemaine2);
@@ -170,21 +175,20 @@ public class recherche_frame extends javax.swing.JFrame {
 
     
    
-    public void afficherCritiques() {
-        try {
-            ArrayList<Critique> critiques = DAO.critiqueDAO.getAll();
-            System.out.println("174 : " + critiques);
-            DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
-            model.setRowCount(0);
-            for (Critique critique : critiques) {
-                System.out.println("178 : " + critique);
-                    String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
-                    model.addRow(row);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erreur DAO getAll()");
+    public void afficherCritiques() throws SQLException {
+        Role userRole = Mainframe.getRole();
+        ArrayList<Critique> critiques = DAO.critiqueDAO.getAll(userRole.getId() == 3);
+        System.out.println("174 : " + critiques);
+        DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
+        model.setRowCount(0);
+        for (Critique critique : critiques) {
+            System.out.println("178 : " + critique);
+            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+            model.addRow(row);
         }
     }
+    
+    
     
    public void afficherCritiquesParDate(Date dateChoisie) {
     try {

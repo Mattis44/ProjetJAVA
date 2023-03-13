@@ -210,6 +210,12 @@ public class main_frame extends javax.swing.JFrame {
     return jTable1;
 }
 
+    public Role getRole() {
+        return role;
+    }
+    
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelMsg;
     private javax.swing.JButton jButtonHideMsg;
