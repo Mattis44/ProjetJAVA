@@ -136,7 +136,6 @@ public class main_frame extends javax.swing.JFrame {
     private void jButtonHideMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHideMsgActionPerformed
 
         Critique select = this.listMessages.get(jTable1.getSelectedRow());
-        System.out.println(select);
 
         int inverseStatus = 1;
         String afficheStatus = "Masquer";
@@ -148,13 +147,16 @@ public class main_frame extends javax.swing.JFrame {
         try {
             critiqueDAO.setMasquerById(select.getUnResto().getId(), select.getUnUtilisateur().getId(), inverseStatus);
             modeleTable.setValueAt(afficheStatus, jTable1.getSelectedRow(), 4);
-
+            
+            if (this.role.getId() == 2) {
+                modeleTable.removeRow(jTable1.getSelectedRow());
+            }
+            
             afficheStatus = "Afficher";
             if (inverseStatus == 0) {
                 afficheStatus = "Masquer";
             }
-            jButtonHideMsg.setText(afficheStatus);            
-            
+            jButtonHideMsg.setText(afficheStatus);          
         } catch (SQLException ex) {
             Logger.getLogger(main_frame.class.getName()).log(Level.SEVERE, null, ex);
         }
