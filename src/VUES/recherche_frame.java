@@ -5,18 +5,43 @@
  */
 package VUES;
 
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import METIERS.Critique;
+import java.sql.SQLException;
+import java.util.Comparator;
+import javax.swing.table.DefaultTableModel;
+import CONTROLEURS.Ctrlmain;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mattis
  */
 public class recherche_frame extends javax.swing.JFrame {
-
+    
+    private Ctrlmain ctrlmain;
+    private main_frame Mainframe;
+    private JTable table;
+    
     /**
      * Creates new form recherche_frame
      */
-    public recherche_frame() {
+    public recherche_frame(main_frame Mainframe) {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("Resto FR - Recherche par critères");
+        this.Mainframe = Mainframe;
+        this.table = Mainframe.getTable();
     }
 
     /**
@@ -31,13 +56,12 @@ public class recherche_frame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
+        jDateChooserSemaine1 = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser3 = new com.toedter.calendar.JDateChooser();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jDateChooserSemaine2 = new com.toedter.calendar.JDateChooser();
+        jCheckBoxMasquerAvis = new javax.swing.JCheckBox();
+        jButtonCriteres = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,19 +73,17 @@ public class recherche_frame extends javax.swing.JFrame {
 
         jLabel4.setText("au");
 
-        jCheckBox1.setText("Afficher les avis masqués");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxMasquerAvis.setText("Afficher les avis masqués");
+        jCheckBoxMasquerAvis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBoxMasquerAvisActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Rechercher");
-
-        jButton2.setText("Rechercher");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCriteres.setText("Rechercher");
+        jButtonCriteres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonCriteresActionPerformed(evt);
             }
         });
 
@@ -75,24 +97,25 @@ public class recherche_frame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDateChooserSemaine1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addComponent(jCheckBox1))
-                .addContainerGap(80, Short.MAX_VALUE))
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDateChooserSemaine2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonCriteres)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBoxMasquerAvis))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(244, 244, 244)
+                        .addComponent(jLabel2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,41 +124,115 @@ public class recherche_frame extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooserSemaine1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jDateChooserSemaine2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxMasquerAvis)
+                    .addComponent(jButtonCriteres))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void jCheckBoxMasquerAvisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMasquerAvisActionPerformed
 
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_jCheckBoxMasquerAvisActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonCriteresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCriteresActionPerformed
+        Date date = jDateChooser.getDate();
+        Date dateSemaine1 = jDateChooserSemaine1.getDate();
+        Date dateSemaine2 = jDateChooserSemaine2.getDate();
+        
+        if(date == null) {
+            if(dateSemaine1 == null || dateSemaine2 == null){
+                // Si la rien est remplie, on remplie normalement la JTable.
+                afficherCritiques();
+            } else {
+                // dateSemaine1 & dateSemaine2 sont remplis.
+                afficherCritiquesEntreDates(dateSemaine1, dateSemaine2);
+            }
+        } else {
+            if(dateSemaine1 != null || dateSemaine2 != null){
+                System.out.println("Veuillez remplir correctement les informations.");
+            } else {
+                // Date remplie
+                afficherCritiquesParDate(date);
+            }
+        }
+    }//GEN-LAST:event_jButtonCriteresActionPerformed
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    
+   
+    public void afficherCritiques() {
+        try {
+            ArrayList<Critique> critiques = DAO.critiqueDAO.getAll();
+            System.out.println("174 : " + critiques);
+            DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
+            model.setRowCount(0);
+            for (Critique critique : critiques) {
+                System.out.println("178 : " + critique);
+                    String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+                    model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur DAO getAll()");
+        }
+    }
+    
+   public void afficherCritiquesParDate(Date dateChoisie) {
+    try {
+        java.sql.Date dateSql = new java.sql.Date(dateChoisie.getTime());
+        ArrayList<Critique> critiques = DAO.critiqueDAO.getAllByDate(dateSql);
+        System.out.println("174 : " + critiques);
+        DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
+        model.setRowCount(0);
+        for (Critique critique : critiques) {
+            System.out.println("178 : " + critique);
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+                model.addRow(row);
+        }
+    } catch (SQLException ex) {
+        System.out.println("Erreur DAO getAll()");
+    }
+}
+   
+   public void afficherCritiquesEntreDates(Date dateChoisie1, Date dateChoisie2) {
+    try {
+        java.sql.Date dateSql1 = new java.sql.Date(dateChoisie1.getTime());
+        java.sql.Date dateSql2 = new java.sql.Date(dateChoisie2.getTime());
+        ArrayList<Critique> critiques = DAO.critiqueDAO.getAllBetweenDates(dateSql1, dateSql2);
+        System.out.println("174 : " + critiques);
+        DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
+        model.setRowCount(0);
+        for (Critique critique : critiques) {
+            System.out.println("178 : " + critique);
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+                model.addRow(row);
+        }
+    } catch (SQLException ex) {
+        System.out.println("Erreur DAO getAll()");
+    }
+}
+
+
+    
 
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private com.toedter.calendar.JDateChooser jDateChooser3;
+    private javax.swing.JButton jButtonCriteres;
+    private javax.swing.JCheckBox jCheckBoxMasquerAvis;
+    private com.toedter.calendar.JDateChooser jDateChooser;
+    private com.toedter.calendar.JDateChooser jDateChooserSemaine1;
+    private com.toedter.calendar.JDateChooser jDateChooserSemaine2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

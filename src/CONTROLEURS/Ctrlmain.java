@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -57,6 +58,7 @@ public class Ctrlmain implements WindowListener, ActionListener {
             System.out.println("Erreur DAO getAll()");
         }
     }
+
     
     public main_frame getVue() {
         return vue;

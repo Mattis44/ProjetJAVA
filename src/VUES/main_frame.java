@@ -129,7 +129,7 @@ public class main_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonHideMsgActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        recherche_frame laVueRech = new recherche_frame();
+        recherche_frame laVueRech = new recherche_frame(this);
         laVueRech.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -140,6 +140,10 @@ public class main_frame extends javax.swing.JFrame {
     public void setModeleTable(DefaultTableModel modeleTable) {
         this.modeleTable = modeleTable;
     }
+    
+    public javax.swing.JTable getTable() {
+    return jTable1;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
