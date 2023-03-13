@@ -82,8 +82,16 @@ public class critiqueDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    
-    
-    
+    public static void supprimerAvis(int idR, int idU) throws SQLException{
+        PreparedStatement pstmt;
+        JDBC jdbc = JDBC.getInstance();
+        
+       String request = "DELETE FROM `critiquer` WHERE idR = ? AND idU = ?";
+       pstmt = jdbc.getConnexion().prepareStatement(request);
+       pstmt.setInt(1, idR);
+       pstmt.setInt(2, idU);
+       pstmt.executeUpdate();
+    }
     }
     
    

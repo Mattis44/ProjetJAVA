@@ -97,6 +97,11 @@ public class main_frame extends javax.swing.JFrame {
         });
 
         jButtonDelMsg.setText("Supprimer");
+        jButtonDelMsg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDelMsgActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -171,6 +176,20 @@ public class main_frame extends javax.swing.JFrame {
             jButtonHideMsg.setText("Masquer");
         } 
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButtonDelMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelMsgActionPerformed
+        if (this.role.getId() == 3){
+            Critique select = this.listMessages.get(jTable1.getSelectedRow());
+            try {
+            critiqueDAO.supprimerAvis(select.getUnResto().getId(), select.getUnUtilisateur().getId());
+            modeleTable.removeRow(jTable1.getSelectedRow());
+                     
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(main_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_jButtonDelMsgActionPerformed
 
     public DefaultTableModel getModeleTable() {
         return modeleTable;
