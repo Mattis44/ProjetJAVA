@@ -18,7 +18,7 @@ public class critiqueDAO {
         ResultSet rs;
         PreparedStatement pstmt;
         JDBC jdbc = JDBC.getInstance();
-        String request = "SELECT * FROM critiquer";
+        String request = "SELECT * FROM critiquer ORDER BY critiquer.date DESC";
         
         pstmt = jdbc.getConnexion().prepareStatement(request);
         rs = pstmt.executeQuery();
