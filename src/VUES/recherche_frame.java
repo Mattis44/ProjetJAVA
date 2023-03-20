@@ -183,7 +183,7 @@ public class recherche_frame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Critique critique : critiques) {
             System.out.println("178 : " + critique);
-            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
             model.addRow(row);
         }
     }
@@ -199,7 +199,7 @@ public class recherche_frame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Critique critique : critiques) {
             System.out.println("178 : " + critique);
-                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
                 model.addRow(row);
         }
     } catch (SQLException ex) {
@@ -217,7 +217,7 @@ public class recherche_frame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Critique critique : critiques) {
             System.out.println("178 : " + critique);
-                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Oui" : "Non"};
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
                 model.addRow(row);
         }
     } catch (SQLException ex) {
