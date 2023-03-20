@@ -182,12 +182,19 @@ public class recherche_frame extends javax.swing.JFrame {
     DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
     model.setRowCount(0);
     for (Critique critique : critiques) {
-        if ((checkmasquer && critique.isMasquer()) || (!checkmasquer && !critique.isMasquer())) {
-            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
+        if (critique.isMasquer() && checkmasquer) {
+            String masquer = critique.isMasquer() ? "Masquer" : "Afficher";
+            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), masquer};
+            model.addRow(row);
+        } else if ((critique.isMasquer() || !critique.isMasquer()) && !checkmasquer) {
+            String masquer = critique.isMasquer() ? "Masquer" : "Afficher";
+            String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), masquer};
             model.addRow(row);
         }
     }
 }
+
+
 
 
 
