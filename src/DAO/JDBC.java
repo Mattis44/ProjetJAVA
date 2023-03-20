@@ -7,10 +7,10 @@ public class JDBC {
     // Instance du singleton Jdbc
     private static JDBC singleton = null;
     // Paramètre de la connexion
-    private String serveurBd = "193.26.14.51:3306";
-    private String nomBd = "resto";
-    private String loginSgbd = "user_resto";
-    private String mdpSgbd = "ziG7@l1#sAE4";
+    private String serveurBd = "91.160.18.96:3306";
+    private String nomBd = "2slamprj2eq04_resto2";
+    private String loginSgbd = "2slamprj2eq04";
+    private String mdpSgbd = "TqV$6rN:1N";
     // Connexion
     private Connection connexion = null; // java.sql.Connection
 
