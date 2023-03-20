@@ -150,84 +150,93 @@ public class recherche_frame extends javax.swing.JFrame {
         Date date = jDateChooser.getDate();
         Date dateSemaine1 = jDateChooserSemaine1.getDate();
         Date dateSemaine2 = jDateChooserSemaine2.getDate();
+        boolean checkmasquer = jCheckBoxMasquerAvis.isSelected();
         
         if(date == null) {
             if(dateSemaine1 == null || dateSemaine2 == null){
                 try {
                     // Si la rien est remplie, on remplie normalement la JTable.
-                    afficherCritiques();
+                    afficherCritiques(checkmasquer);
                 } catch (SQLException ex) {
                     Logger.getLogger(recherche_frame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 // dateSemaine1 & dateSemaine2 sont remplis.
-                afficherCritiquesEntreDates(dateSemaine1, dateSemaine2);
+                afficherCritiquesEntreDates(dateSemaine1, dateSemaine2, checkmasquer);
             }
         } else {
             if(dateSemaine1 != null || dateSemaine2 != null){
                 System.out.println("Veuillez remplir correctement les informations.");
             } else {
                 // Date remplie
-                afficherCritiquesParDate(date);
+                afficherCritiquesParDate(date, checkmasquer);
             }
         }
     }//GEN-LAST:event_jButtonCriteresActionPerformed
 
     
    
-    public void afficherCritiques() throws SQLException {
-        Role userRole = Mainframe.getRole();
-        ArrayList<Critique> critiques = DAO.critiqueDAO.getAll(userRole.getId() == 3);
-        System.out.println("174 : " + critiques);
-        DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
-        model.setRowCount(0);
-        for (Critique critique : critiques) {
-            System.out.println("178 : " + critique);
+    public void afficherCritiques(boolean checkmasquer) throws SQLException {
+    Role userRole = Mainframe.getRole();
+    ArrayList<Critique> critiques = DAO.critiqueDAO.getAll(userRole.getId() == 3);
+    DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
+    model.setRowCount(0);
+    for (Critique critique : critiques) {
+        if ((checkmasquer && critique.isMasquer()) || (!checkmasquer && !critique.isMasquer())) {
             String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
             model.addRow(row);
         }
     }
+}
+
+
+
+
+
+
     
     
     
-   public void afficherCritiquesParDate(Date dateChoisie) {
+   public void afficherCritiquesParDate(Date dateChoisie, boolean checkmasquer) {
     try {
         java.sql.Date dateSql = new java.sql.Date(dateChoisie.getTime());
         ArrayList<Critique> critiques = DAO.critiqueDAO.getAllByDate(dateSql);
-        System.out.println("174 : " + critiques);
         DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
         model.setRowCount(0);
         for (Critique critique : critiques) {
-            System.out.println("178 : " + critique);
-                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
+             if ((checkmasquer && critique.isMasquer()) || (!checkmasquer && !critique.isMasquer())) {
+                String masquer = critique.isMasquer() ? "Masquer" : "Afficher";
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), masquer};
                 model.addRow(row);
+            }
         }
     } catch (SQLException ex) {
-        System.out.println("Erreur DAO getAll()");
+        System.out.println("Erreur DAO getAllByDate()");
     }
 }
    
-   public void afficherCritiquesEntreDates(Date dateChoisie1, Date dateChoisie2) {
+   public void afficherCritiquesEntreDates(Date dateChoisie1, Date dateChoisie2, boolean checkmasquer) {
     try {
         java.sql.Date dateSql1 = new java.sql.Date(dateChoisie1.getTime());
         java.sql.Date dateSql2 = new java.sql.Date(dateChoisie2.getTime());
         ArrayList<Critique> critiques = DAO.critiqueDAO.getAllBetweenDates(dateSql1, dateSql2);
-        System.out.println("174 : " + critiques);
         DefaultTableModel model = (DefaultTableModel) Mainframe.getTable().getModel();
         model.setRowCount(0);
         for (Critique critique : critiques) {
-            System.out.println("178 : " + critique);
-                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), critique.isMasquer() ? "Masquer" : "Afficher"};
+             if ((checkmasquer && critique.isMasquer()) || (!checkmasquer && !critique.isMasquer())) {
+                String masquer = critique.isMasquer() ? "Masquer" : "Afficher";
+                String[] row = {critique.getUnUtilisateur().getEmail(), critique.getUnResto().getNom(), critique.getDate().toString(), critique.getCommentaire(), masquer};
                 model.addRow(row);
+            }
         }
     } catch (SQLException ex) {
-        System.out.println("Erreur DAO getAll()");
+        System.out.println("Erreur DAO getAllBetweenDates()");
     }
 }
 
 
-    
 
+   
     
 
 
